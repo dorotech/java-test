@@ -2,11 +2,13 @@ package com.br.dorotech.app.services;
 
 import com.br.dorotech.app.models.dtos.ProductDTO;
 
+import java.util.List;
+
 public interface ProductService {
 
     ProductDTO createNewProduct(ProductDTO productDTO);
 
-    ProductDTO findAllProducts();
+    List<ProductDTO> findAllProducts();
 
     ProductDTO findProductById(Long id);
 

@@ -1,19 +1,23 @@
 package com.br.dorotech.app.services.impl;
 
+import com.br.dorotech.app.helper.ProductsHelper;
 import com.br.dorotech.app.models.dtos.ProductDTO;
 import com.br.dorotech.app.models.entities.Products;
 import com.br.dorotech.app.repositories.ProductRepository;
 import com.br.dorotech.app.services.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import springfox.documentation.swagger2.mappers.ModelMapper;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
+    private final ModelMapper modelMapper;
 
     @Override
     public ProductDTO createNewProduct(ProductDTO productDTO) {
@@ -27,9 +31,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductDTO findAllProducts() {
+    public List<ProductDTO> findAllProducts() {
         List<Products> productsList = productRepository.findAll();
-        return null;
+        return productsList.stream()
+                .map(ProductsHelper::productsDTOBuilder)
+                .collect(Collectors.toList());
     }
 
     @Override
