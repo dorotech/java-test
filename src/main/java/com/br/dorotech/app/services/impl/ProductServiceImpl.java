@@ -12,6 +12,8 @@ import springfox.documentation.swagger2.mappers.ModelMapper;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.br.dorotech.app.helper.ProductsHelper.productsBuilder;
+
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
@@ -20,12 +22,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDTO createNewProduct(ProductDTO productDTO) {
-        Products product = new Products();
-        product.setName(productDTO.getName());
-        product.setAmount(productDTO.getAmount());
-        product.setDescription(productDTO.getDescription());
-        product.setPrice(productDTO.getPrice());
-        productRepository.save(product);
+        productsBuilder(productDTO);
         return productDTO;
     }
 

@@ -14,4 +14,13 @@ public class ProductsHelper {
                 .build();
     }
 
+    public static Products productsBuilder(ProductDTO productDTO){
+        return Products.builder()
+                .amount(productDTO.getAmount())
+                .price(productDTO.getPrice())
+                .name(productDTO.getName())
+                .description(productDTO.getDescription())
+                .build();
+    }
+
 }
