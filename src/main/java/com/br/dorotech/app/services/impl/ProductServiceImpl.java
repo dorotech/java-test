@@ -22,7 +22,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDTO createNewProduct(ProductDTO productDTO) {
-        productsBuilder(productDTO);
+        productRepository.save(productsBuilder(productDTO));
         return productDTO;
     }
 
