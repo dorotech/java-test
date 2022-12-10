@@ -1,4 +1,4 @@
-package com.br.dorotech.app.controllers;
+package com.br.dorotech.app.models.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
