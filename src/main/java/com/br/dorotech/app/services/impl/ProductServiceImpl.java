@@ -2,7 +2,9 @@ package com.br.dorotech.app.services.impl;
 
 import com.br.dorotech.app.models.dtos.ProductDTO;
 import com.br.dorotech.app.services.ProductService;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ProductServiceImpl implements ProductService {
 
 
