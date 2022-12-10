@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 
 import static com.br.dorotech.app.helper.ProductsHelper.productsBuilder;
 import static com.br.dorotech.app.helper.ProductsHelper.productsDTOBuilder;
+import static com.br.dorotech.app.helper.ProductsHelper.productsUpdateBuilder;
 
 @Service
 @RequiredArgsConstructor
@@ -50,7 +51,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void updateProduct(Long id) {
-
+    public void updateProduct(Long id, ProductDTO productDTO) {
+        Products products = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "Id not found!"));
+        Products productsUpdated = productsUpdateBuilder(products, productDTO);
+        productRepository.save(productsUpdated);
     }
 }

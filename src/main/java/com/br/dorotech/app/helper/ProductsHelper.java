@@ -23,4 +23,14 @@ public class ProductsHelper {
                 .build();
     }
 
+    public static Products productsUpdateBuilder(Products products, ProductDTO productDTO){
+        return Products.builder()
+                .id(products.getId())
+                .amount(productDTO.getAmount())
+                .price(productDTO.getPrice())
+                .name(productDTO.getName())
+                .description(productDTO.getDescription())
+                .build();
+    }
+
 }
