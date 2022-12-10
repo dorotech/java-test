@@ -21,7 +21,7 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping(value = "/getAllProducts")
-    public ResponseEntity<List<ProductDTO>> getAllFarms() {
+    public ResponseEntity<List<ProductDTO>> getAllProducts() {
         final List<ProductDTO> productDTOS = productService.findAllProducts();
         return new ResponseEntity<>(productDTOS, HttpStatus.OK);
     }
