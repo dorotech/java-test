@@ -1,21 +1,21 @@
 package com.br.dorotech.app.helper;
 
 import com.br.dorotech.app.models.dtos.ProductDTO;
-import com.br.dorotech.app.models.entities.Products;
+import com.br.dorotech.app.models.entities.Product;
 
-public class ProductsHelper {
+public class ProductHelper {
 
-    public static ProductDTO productsDTOBuilder(Products products){
+    public static ProductDTO productsDTOBuilder(Product product){
         return ProductDTO.builder()
-                .amount(products.getAmount())
-                .price(products.getPrice())
-                .name(products.getName())
-                .description(products.getDescription())
+                .amount(product.getAmount())
+                .price(product.getPrice())
+                .name(product.getName())
+                .description(product.getDescription())
                 .build();
     }
 
-    public static Products productsBuilder(ProductDTO productDTO){
-        return Products.builder()
+    public static Product productsBuilder(ProductDTO productDTO){
+        return Product.builder()
                 .amount(productDTO.getAmount())
                 .price(productDTO.getPrice())
                 .name(productDTO.getName())
@@ -23,9 +23,9 @@ public class ProductsHelper {
                 .build();
     }
 
-    public static Products productsUpdateBuilder(Products products, ProductDTO productDTO){
-        return Products.builder()
-                .id(products.getId())
+    public static Product productsUpdateBuilder(Product product, ProductDTO productDTO){
+        return Product.builder()
+                .id(product.getId())
                 .amount(productDTO.getAmount())
                 .price(productDTO.getPrice())
                 .name(productDTO.getName())

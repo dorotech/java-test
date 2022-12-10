@@ -1,22 +1,21 @@
 package com.br.dorotech.app.services.impl;
 
 import com.br.dorotech.app.exceptions.ResourceNotFoundException;
-import com.br.dorotech.app.helper.ProductsHelper;
+import com.br.dorotech.app.helper.ProductHelper;
 import com.br.dorotech.app.models.dtos.ProductDTO;
-import com.br.dorotech.app.models.entities.Products;
+import com.br.dorotech.app.models.entities.Product;
 import com.br.dorotech.app.repositories.ProductRepository;
 import com.br.dorotech.app.services.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import springfox.documentation.swagger2.mappers.ModelMapper;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.br.dorotech.app.helper.ProductsHelper.productsBuilder;
-import static com.br.dorotech.app.helper.ProductsHelper.productsDTOBuilder;
-import static com.br.dorotech.app.helper.ProductsHelper.productsUpdateBuilder;
+import static com.br.dorotech.app.helper.ProductHelper.productsBuilder;
+import static com.br.dorotech.app.helper.ProductHelper.productsDTOBuilder;
+import static com.br.dorotech.app.helper.ProductHelper.productsUpdateBuilder;
 
 @Service
 @RequiredArgsConstructor
@@ -32,29 +31,29 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductDTO> findAllProducts() {
-        List<Products> productsList = productRepository.findAll();
-        return productsList.stream()
-                .map(ProductsHelper::productsDTOBuilder)
+        List<Product> productList = productRepository.findAll();
+        return productList.stream()
+                .map(ProductHelper::productsDTOBuilder)
                 .collect(Collectors.toList());
     }
 
     @Override
     public ProductDTO findProductById(Long id) {
-        Products products = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "Id not found!"));
-        return productsDTOBuilder(products);
+        Product product = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "Id not found!"));
+        return productsDTOBuilder(product);
     }
 
     @Override
     public void deleteProduct(Long id) {
-        Products products = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "Id not found!"));
-        productRepository.delete(products);
+        Product product = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "Id not found!"));
+        productRepository.delete(product);
     }
 
     @Override
     public ProductDTO updateProduct(Long id, ProductDTO productDTO) {
-        Products products = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "Id not found!"));
-        Products productsUpdated = productsUpdateBuilder(products, productDTO);
-        productRepository.save(productsUpdated);
+        Product product = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "Id not found!"));
+        Product productUpdated = productsUpdateBuilder(product, productDTO);
+        productRepository.save(productUpdated);
         return productDTO;
     }
 }
