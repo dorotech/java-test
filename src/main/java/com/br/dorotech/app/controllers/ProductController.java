@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,6 +26,10 @@ public class ProductController {
         return new ResponseEntity<>(productDTOS, HttpStatus.OK);
     }
 
-
+    @PostMapping(value = "/createProduct")
+    public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductDTO productDTO) {
+        final ProductDTO createProductDTO = productService.createNewProduct(productDTO);
+        return new ResponseEntity<>(createProductDTO, HttpStatus.CREATED);
+    }
 
 }
