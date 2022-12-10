@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
-    private final ModelMapper modelMapper;
 
     @Override
     public ProductDTO createNewProduct(ProductDTO productDTO) {
