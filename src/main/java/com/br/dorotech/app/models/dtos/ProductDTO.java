@@ -2,8 +2,6 @@ package com.br.dorotech.app.models.dtos;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-
 @Data
 public class ProductDTO {
 
