@@ -51,9 +51,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void updateProduct(Long id, ProductDTO productDTO) {
+    public ProductDTO updateProduct(Long id, ProductDTO productDTO) {
         Products products = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "Id not found!"));
         Products productsUpdated = productsUpdateBuilder(products, productDTO);
         productRepository.save(productsUpdated);
+        return productDTO;
     }
 }

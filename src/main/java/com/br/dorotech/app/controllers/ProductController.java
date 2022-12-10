@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -47,7 +48,10 @@ public class ProductController {
         return new ResponseEntity<>(msg, HttpStatus.OK);
     }
 
-    
-
+    @PutMapping(value = "/updateProduct/{id}")
+    public ResponseEntity<ProductDTO> updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO) {
+        final ProductDTO productUpdateDTO = productService.updateProduct(id, productDTO);
+        return new ResponseEntity<>(productUpdateDTO, HttpStatus.OK);
+    }
 
 }
