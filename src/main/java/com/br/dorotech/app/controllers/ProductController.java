@@ -5,6 +5,7 @@ import com.br.dorotech.app.services.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,10 +35,18 @@ public class ProductController {
     }
 
     @GetMapping(value = "/getProductById/{id}")
-    public ResponseEntity<ProductDTO> getFarmById(@PathVariable Long id){
+    public ResponseEntity<ProductDTO> getProductById(@PathVariable Long id){
         final ProductDTO productDTO = productService.findProductById(id);
         return new ResponseEntity<>(productDTO, HttpStatus.OK);
     }
+
+    @DeleteMapping(value = "/deleteProduct/{id}")
+    public ResponseEntity<String> deleteProduct(@PathVariable Long id) {
+        final String msg = "Product Id " + id + " deleted!";
+        productService.deleteProduct(id);
+        return new ResponseEntity<>(msg, HttpStatus.OK);
+    }
+
 
 
 
