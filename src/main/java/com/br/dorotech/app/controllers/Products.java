@@ -21,7 +21,7 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @Builder
 public class Products {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
