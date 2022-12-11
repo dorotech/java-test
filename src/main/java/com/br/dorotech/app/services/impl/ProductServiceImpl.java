@@ -6,7 +6,11 @@ import com.br.dorotech.app.models.dtos.ProductDTO;
 import com.br.dorotech.app.models.entities.Product;
 import com.br.dorotech.app.repositories.ProductRepository;
 import com.br.dorotech.app.services.ProductService;
+import com.br.dorotech.app.sqs.ProductMessageProducer;
+import com.br.dorotech.app.util.JsonUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -19,14 +23,27 @@ import static com.br.dorotech.app.helper.ProductHelper.productsUpdateBuilder;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
 
+    private final ProductMessageProducer productMessageProducer;
+
+    @Value("${amazon.queue.product-creation}")
+    private String queueName;
+
     @Override
-    public ProductDTO createNewProduct(ProductDTO productDTO) {
-        productRepository.save(productsBuilder(productDTO));
+    public ProductDTO startProductCreation(ProductDTO productDTO) {
+        productMessageProducer.sentToQueue(queueName, JsonUtil.writeValueAsString(productDTO));
+        log.info("***** PRODUCT CREATION DATA SENT TO QUEUE:  " + queueName + ", PRODUCT NAME: " + productDTO.getName()
+                + ", PRODUCT DESCRIPTION: " + productDTO.getDescription());
         return productDTO;
+    }
+
+    @Override
+    public void finishProductCreation(ProductDTO productDTO){
+        productRepository.save(productsBuilder(productDTO));
     }
 
     @Override
@@ -56,4 +73,5 @@ public class ProductServiceImpl implements ProductService {
         productRepository.save(productUpdated);
         return productDTO;
     }
+
 }

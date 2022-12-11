@@ -31,7 +31,7 @@ public class ProductController {
 
     @PostMapping(value = "/createProduct")
     public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductDTO productDTO) {
-        final ProductDTO createProductDTO = productService.createNewProduct(productDTO);
+        final ProductDTO createProductDTO = productService.startProductCreation(productDTO);
         return new ResponseEntity<>(createProductDTO, HttpStatus.CREATED);
     }
 

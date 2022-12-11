@@ -6,7 +6,9 @@ import java.util.List;
 
 public interface ProductService {
 
-    ProductDTO createNewProduct(ProductDTO productDTO);
+    ProductDTO startProductCreation(ProductDTO productDTO);
+
+    void finishProductCreation(ProductDTO productDTO);
 
     List<ProductDTO> findAllProducts();
 

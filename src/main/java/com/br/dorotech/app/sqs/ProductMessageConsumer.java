@@ -15,19 +15,25 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ProductMessageConsumer {
 
-    private ProductService productService;
+    private final ProductService productService;
 
     @Value("${amazon.queue.product-creation}")
     private String queueName;
 
-    @JmsListener(destination = "${amazon.queue.attendance}")
+    @JmsListener(destination = "${amazon.queue.product-creation}")
     public void messageConsumer(@Payload String message) {
         ProductDTO productDTO = JsonUtil.readValue(message, ProductDTO.class);
 
         log.info("***** PRODUCT CREATED:  " + queueName + ", PRODUCT NAME: " + productDTO.getName()
                 + ", PRODUCT DESCRIPTION: " + productDTO.getDescription());
 
-        //IMPLEMENTAR CHAMADA EM SERVICE
+        System.out.println("***********************************************************************************************");
+        System.out.println();
+        System.out.println("Message consumed, Product Name : " + productDTO.getName() + " , Product Description : " + productDTO.getDescription());
+        System.out.println();
+        System.out.println("***********************************************************************************************");
+
+        productService.finishProductCreation(productDTO);
     }
 
 }

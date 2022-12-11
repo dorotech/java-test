@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ProductMessageProducer {
 
-    private AmazonSQS amazonSQS;
+    private final AmazonSQS amazonSQS;
 
     public void sentToQueue(final String queueName, final String message) {
         amazonSQS.sendMessage(new SendMessageRequest()
