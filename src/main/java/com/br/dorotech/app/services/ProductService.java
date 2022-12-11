@@ -10,10 +10,10 @@ public interface ProductService {
 
     List<ProductDTO> findAllProducts();
 
-    ProductDTO findProductById(Long id);
+    ProductDTO findProductById(String id);
 
-    void deleteProduct(Long id);
+    void deleteProduct(String id);
 
-    ProductDTO updateProduct(Long id, ProductDTO productDTO);
+    ProductDTO updateProduct(String id, ProductDTO productDTO);
 
 }

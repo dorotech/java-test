@@ -1,11 +1,13 @@
 package com.br.dorotech.app.repositories;
 
 import com.br.dorotech.app.models.entities.Product;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.socialsignin.spring.data.dynamodb.repository.DynamoDBCrudRepository;
+import org.socialsignin.spring.data.dynamodb.repository.EnableScan;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProductRepository extends JpaRepository<Product, Long> {
+@EnableScan
+public interface ProductRepository extends DynamoDBCrudRepository<Product, String> {
 
 
 }

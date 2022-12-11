@@ -1,0 +1,15 @@
+server:
+  port: 8081
+  error:
+    include-message: always
+    include-binding-errors: always
+
+amazon:
+  aws:
+    accesskey:  ${access.key}
+    secretkey:  ${secret.key}
+  dynamodb:
+    endpoint: http://dynamodb.us-east-1.amazonaws.com
+
+  region: us-east-1
+

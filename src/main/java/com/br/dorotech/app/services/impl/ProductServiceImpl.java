@@ -31,26 +31,26 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductDTO> findAllProducts() {
-        List<Product> productList = productRepository.findAll();
+        List<Product> productList = (List<Product>) productRepository.findAll();
         return productList.stream()
                 .map(ProductHelper::productsDTOBuilder)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public ProductDTO findProductById(Long id) {
+    public ProductDTO findProductById(String id) {
         Product product = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "Id not found!"));
         return productsDTOBuilder(product);
     }
 
     @Override
-    public void deleteProduct(Long id) {
+    public void deleteProduct(String id) {
         Product product = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "Id not found!"));
         productRepository.delete(product);
     }
 
     @Override
-    public ProductDTO updateProduct(Long id, ProductDTO productDTO) {
+    public ProductDTO updateProduct(String id, ProductDTO productDTO) {
         Product product = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(HttpStatus.NOT_FOUND, "Id not found!"));
         Product productUpdated = productsUpdateBuilder(product, productDTO);
         productRepository.save(productUpdated);
