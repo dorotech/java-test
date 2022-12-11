@@ -1,31 +1,20 @@
 version: 0.2
 
-
 phases:
+  install:
+    runtime-versions:
+      java: corretto11
   pre_build:
     commands:
-      - mvn clean install
-      - echo Logging in to Amazon ECR...
-      - aws --version
-      - REPOSITORY_URI=237601488461.dkr.ecr.us-east-1.amazonaws.com/myrepository
-      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
-      - IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}')
+      - echo skipped on date...
   build:
     commands:
-      - echo Build started on `date`
-      - echo Building the Docker image...
-      - docker build -t $REPOSITORY_URI:latest .
-      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+      - echo Maven Build on `date`
+      - java -version
+      - mvn clean package
   post_build:
     commands:
       - echo Build completed on `date`
-      - echo Pushing the Docker images...
-      - docker push $REPOSITORY_URI:latest
-      - docker push $REPOSITORY_URI:$IMAGE_TAG
-      - echo Writing image definitions file...
-      - printf '[{"name":"dorotech-test","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
-      - cat imagedefinitions.json
 artifacts:
   files:
-    - imagedefinitions.json
     - target/dorotech_teste-1.0-SNAPSHOT.jar
