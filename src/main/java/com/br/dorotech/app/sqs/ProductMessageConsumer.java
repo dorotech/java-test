@@ -27,12 +27,6 @@ public class ProductMessageConsumer {
         log.info("***** PRODUCT CREATED:  " + queueName + ", PRODUCT NAME: " + productDTO.getName()
                 + ", PRODUCT DESCRIPTION: " + productDTO.getDescription());
 
-        System.out.println("***********************************************************************************************");
-        System.out.println();
-        System.out.println("Message consumed, Product Name : " + productDTO.getName() + " , Product Description : " + productDTO.getDescription());
-        System.out.println();
-        System.out.println("***********************************************************************************************");
-
         productService.finishProductCreation(productDTO);
     }
 
