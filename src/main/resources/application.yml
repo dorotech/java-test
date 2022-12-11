@@ -12,7 +12,7 @@ amazon:
     endpoint: http://dynamodb.us-east-1.amazonaws.com
 
   queue:
-    product-creation: products-creation
+    product-creation: product-creation
 
   region: us-east-1
 
