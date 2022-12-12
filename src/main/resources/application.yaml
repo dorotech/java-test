@@ -1,0 +1,11 @@
+server:
+  port: 8081
+  error:
+    include-message: always
+    include-binding-errors: always
+
+spring:
+  data:
+    mongodb:
+      database: productsdb
+      uri: mongodb+srv://user:ZpZs20VRAuCarKdz@desenvolvimento-web.w6ya3e7.mongodb.net/productsdb
