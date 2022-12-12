@@ -1,76 +1,61 @@
 # Desafio Back End Java na DoroTech 
 
-Somos uma empresa com clientes que atuam em vários segmentos do mercado, com diferentes tecnologias, culturas e desafios.
-
-Gostamos de compor nossos times com profissionais multidisciplinares, que tenham alta capacidade de aprendizado, sejam detalhistas, resilientes, questionadores e curiosos. Você, como Java Developer, será o responsável por implementar, dar manutenção, aplicar correções e propor soluções em projetos de software.
-
-## Requisitos do desafio:
+### Documentação
 ```
-1. Criar um código que execute um CRUD(Create, Read, Update, Delete) em uma tabela para gerenciar produtos eletrônicos.
-2. Use um banco NoSQL(DynamoDB é um diferencial).
-3. Utilizar Spring como framework(Quarkus é um diferencial).
-4. Dados da tabela a ser criada no banco:
-    - Products:
-        name,
-        description,
-        price,
-        amount.
 
+1. Desenvolvido aplicação CRUD para cadastro, recuperação, update e delete de produtos.
 
-Seja criativo! fazer o melhor não é ser complexo.
-``` 
+2. Foi utilizado o Framework SpringBoot para desenvolvimento, java 11, Maven, Swagger e Lombok.
 
-## Dicas e Informações Valiosas
-```
-O que gostaríamos de ver em seu teste:
+3. Os dados estão sendo persistidos no Banco de dados NOSQl DynamoDB, tambem estou utilizando Docker, ECR, ECS, fargate, CodeBuild e CodePipeline para deploy da aplicação.
+
+4. Utilizei processamento assincrono para criação de um novo produto, utilizando o SQS da AWS
+
+5. As variaveis de ambiente com as credenciais da AWS para testar a aplicação serão enviadas ao avaliador
+ 
+6. A aplicação foi configurada para rodar na porta 8081, assim como a porta do container que esta sendo exposta é a porta 81
+
+7. É possivil testar e verificar parte da documentação gerada pelo swagger no link gerado pelo mesmo quando rodando local: http://localhost:8081/swagger-ui.html#/
+
+8. Como rodar manualmente: 
+    - va ao diretorio raiz do projeto e acesse a pasta target
+    - em seguida abra no terminal a localização e entre com o seguinte comando
+    - mvn spring-boot:run 
+    Obs: atente-se as variaveis de ambiente
     
-    Convenção de nome em classes, objetos, variáveis, métodos e etc.
-    Faça commits regulares. Eles são melhores do que um commit gigantesco. Gostaríamos de ver commits organizados e padronizados, então capriche neles!
-    Bônus 1 Quarkus & AWS, implementação de uma lambda AWS utilizando framework Quarkus
-    Bônus 2 Testes automatizados
-    Observação: Nenhum dos itens acima é obrigatório.
+9. Acesso através da API publica : http://54.237.216.243:8081/ + rotas 
+   Acesso atraǘes da API publica  + Swagger : http://54.237.216.243:8081/swagger-ui.html#/
 
-O que o seu Teste não deve ter:
-    Saber que não foi você quem implementou o projeto.
-    Várias bibliotecas instaladas sem uso.
-    Falta de organização de código.
-    Falta de documentação.
-    Nome de variáveis sem sentido ou sem padrão de nomes.
-    Histórico de commits desorganizado e despadronizado.
+9. Caso deseje rodar via IDE recomendo fortemente o uso do Intellij, porem caso use outra IDE não deve encontrar grandes problemas pois todo o gerenciamento
+de dependencias esta sendo feito pelo maven, basta apenas ter atenção ao detalhe do anotation processor do lombok e tambem adicionar as variaveis de ambiente
 
-Boa Sorte!!
+
 ```
 
-## Itens obrigatórios
+### Métodos HTTP
 ```
-1. Possibilitar a criação de um novo produto
-2. Possibilitar consulta de todos os produtos no banco de dados.
-3. Possibilitar consultar um produto específico pelo id.
-4. Permitir a exclusão de um produto.
-5. Persistir os dados na base.
-```
-
-## Itens desejáveis
-```
-1. Criação de Testes unitários.
-2. Utilização de alguma ferramenta AWS(API Gateway, Lambda, SQS, SNS, EC2,..).
-3. Docker.
-4. Utilização de algum padrão de projeto.
+--->>>Local
+    - Busca todos os produtos - GET : http://localhost:8081/products/getAllProducts
+    - Cria produto - POST :  http://localhost:8081/products/createProduct
+    - Encontra produto por ID - GET : GET http://localhost:8081/products/getProductById/{{id}}
+    - Deleta produto por ID - DELETE : http://localhost:8081/products/deleteProduct/{{id}}
+    - Atualiza produto por ID - UPDATE : http://localhost:8081/products/updateProduct/{{id}}   
+   
 ```
 
-### Instruções para entrega
+### Funcionamento do programa
 ```
-1. Fazer um fork desse repositório
 
-2. Criar um branch com o seu primeiro e último nome
-git checkout -b joao-silva
+    OBS: Recomendo a utilização do Swagger para fins de testes manuais. Link Segue Acima
 
-3. Escreva a documentação da sua aplicação
-Você deve, substituir o conteúdo do arquivo README.md e escrever a documentação da sua aplicação, com os seguintes tópicos:
-    - Projeto: Descreva o projeto e como você o executou. Seja objetivo.
-    - Tecnologias: Descreva quais tecnologias foram utilizadas, enumerando versões (se necessário) e os links para suas documentações, quais bibliotecas instalou e porque.
-Como compilar e rodar: Descreva como compilar e rodar sua aplicação.
-
-4. Faça uma Pull Request
-Após implementada a solução, crie uma pull request com o seu projeto para esse repositório, avise o recrutador.
+    - Ao iniciar o programa localmente o mesmo ira rodar na porta local 8081 e necessitará das variaveis de ambiente para se conectar a AWS
+     e por fim se conectar ao DynamoDB e ao sistema de filas SQS
+    - Ja existe uma carga de dados no Banco então se ao iniciar o software e acessar o metodo GET /getAllProducts esse por sua vez deverá retornar os produtos do banco
+    - Para criar um produto isso deverá ser feito através do metodo POST /createProduct, a criação de produtos ocorrerá em background com o DTO do produto sendo enviado 
+    para uma fila SQS, e só após a fila ser consumida esse novo produto será persistido no banco.
+    - Para fazer um update, primeiro deve-se saber o ID do produto em seguida atualizar as informação e então enviar a requisição.
+    - Para se fazer um delete também é necessário saber o ID do produto que se deseja excluir.
+    
 ```
+
+
