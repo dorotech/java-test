@@ -23,7 +23,7 @@ phases:
       - echo Pushing the Docker images...
       - docker push 237601488461.dkr.ecr.us-east-1.amazonaws.com/myrepository:latest
       - echo Writing image definitions file...
-      - printf '[{"name":"dorotech-api","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+      - printf '[{"name":"myrepository","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
       - cat imagedefinitions.json
 artifacts:
   files:
