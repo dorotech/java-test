@@ -1,7 +1,6 @@
 package com.br.dorotech.app.services.impl;
 
 import com.br.dorotech.app.exceptions.ResourceNotFoundException;
-import com.br.dorotech.app.helper.ProductHelper;
 import com.br.dorotech.app.models.dtos.ProductDTO;
 import com.br.dorotech.app.models.entities.Product;
 import com.br.dorotech.app.repositories.ProductRepository;
@@ -15,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.br.dorotech.app.helper.ProductHelper.productsBuilder;
 import static com.br.dorotech.app.helper.ProductHelper.productsDTOBuilder;
@@ -47,11 +45,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductDTO> findAllProducts() {
-        List<Product> productList = (List<Product>) productRepository.findAll();
-        return productList.stream()
-                .map(ProductHelper::productsDTOBuilder)
-                .collect(Collectors.toList());
+    public List<Product> findAllProducts() {
+        return (List<Product>) productRepository.findAll();
     }
 
     @Override

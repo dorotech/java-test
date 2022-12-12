@@ -1,6 +1,7 @@
 package com.br.dorotech.app.controllers;
 
 import com.br.dorotech.app.models.dtos.ProductDTO;
+import com.br.dorotech.app.models.entities.Product;
 import com.br.dorotech.app.services.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,9 +25,9 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping(value = "/getAllProducts")
-    public ResponseEntity<List<ProductDTO>> getAllProducts() {
-        final List<ProductDTO> productDTOS = productService.findAllProducts();
-        return new ResponseEntity<>(productDTOS, HttpStatus.OK);
+    public ResponseEntity<List<Product>> getAllProducts() {
+        final List<Product> product = productService.findAllProducts();
+        return new ResponseEntity<>(product, HttpStatus.OK);
     }
 
     @PostMapping(value = "/createProduct")
