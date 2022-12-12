@@ -1,26 +1,22 @@
 # Desafio Back End Java na DoroTech 
 
-Somos uma empresa com clientes que atuam em vários segmentos do mercado, com diferentes tecnologias, culturas e desafios.
-
-Gostamos de compor nossos times com profissionais multidisciplinares, que tenham alta capacidade de aprendizado, sejam detalhistas, resilientes, questionadores e curiosos. Você, como Java Developer, será o responsável por implementar, dar manutenção, aplicar correções e propor soluções em projetos de software.
-
-
 ### Documentação
 ```
-1. Desenvolvido aplicação CRUD para cadastro, recuperação, update e delete.
 
-2. Foi utilizado o Framework SpringBoot para desenvolvimento.
 
-3. Os dados estão sendo persistidos no Banco de dados NOSQl DynamoDB, tambem estou utilizando Docker, ECR, e ECS fargate para deploy da aplicação.
+1. Desenvolvido aplicação CRUD para cadastro, recuperação, update e delete de produtos.
+
+2. Foi utilizado o Framework SpringBoot para desenvolvimento e java 11.
+
+3. Os dados estão sendo persistidos no Banco de dados NOSQl DynamoDB, tambem estou utilizando Docker, ECR, ECS, fargate, CodeBuild e CodePipeline para deploy da aplicação.
 
 4. Utilizei processamento assincrono para criação de um novo produto, utilizando o SQS da AWS
 
-5. As variaveis de ambiente com as credenciais da AWS serão enviadas ao avaliador
- Documentação
+5. As variaveis de ambiente com as credenciais da AWS para testar a aplicação serão enviadas ao avaliador
  
 6. A aplicação foi configurada para rodar na porta 8081, assim como a porta do container que esta sendo exposta é a porta 81
 
-7. É possivil testar e verificar parte da documentação gerada pelo swagger no link gerado pelo mesmo: http://localhost:8081/swagger-ui.html#/
+7. É possivil testar e verificar parte da documentação gerada pelo swagger no link gerado pelo mesmo quando rodando local: http://localhost:8081/swagger-ui.html#/
 
 8. Como rodar manualmente: 
     - va ao diretorio raiz do projeto e acesse a pasta target
@@ -30,6 +26,7 @@ Gostamos de compor nossos times com profissionais multidisciplinares, que tenham
 
 9. Caso deseje rodar via IDE recomendo fortemente o uso do Intellij, porem caso use outra IDE não deve encontrar grandes problemas pois todo o gerenciamento
 de dependencias esta sendo feito pelo maven, basta apenas ter atenção ao detalhe do anotation processor do lombok e tambem adicionar as variaveis de ambiente
+
 
 ```
 
@@ -47,7 +44,7 @@ de dependencias esta sendo feito pelo maven, basta apenas ter atenção ao detal
 ### Funcionamento do programa
 ```
 
-    OBS: Recomendo a utilizção do Swagger para fins de testes manuais.
+    OBS: Recomendo a utilização do Swagger para fins de testes manuais. Link Segue Acima
 
     - Ao iniciar o programa localmente o mesmo ira rodar na porta local 8081 e necessitará das variaveis de ambiente para se conectar a AWS
      e por fim se conectar ao DynamoDB e ao sistema de filas SQS
