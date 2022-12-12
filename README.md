@@ -3,10 +3,9 @@
 ### Documentação
 ```
 
-
 1. Desenvolvido aplicação CRUD para cadastro, recuperação, update e delete de produtos.
 
-2. Foi utilizado o Framework SpringBoot para desenvolvimento e java 11.
+2. Foi utilizado o Framework SpringBoot para desenvolvimento, java 11, Maven, Swagger e Lombok.
 
 3. Os dados estão sendo persistidos no Banco de dados NOSQl DynamoDB, tambem estou utilizando Docker, ECR, ECS, fargate, CodeBuild e CodePipeline para deploy da aplicação.
 
@@ -23,6 +22,9 @@
     - em seguida abra no terminal a localização e entre com o seguinte comando
     - mvn spring-boot:run 
     Obs: atente-se as variaveis de ambiente
+    
+9. Acesso através da API publica : http://54.237.216.243:8081/ + rotas 
+   Acesso atraǘes da API publica  + Swagger : http://54.237.216.243:8081/swagger-ui.html#/
 
 9. Caso deseje rodar via IDE recomendo fortemente o uso do Intellij, porem caso use outra IDE não deve encontrar grandes problemas pois todo o gerenciamento
 de dependencias esta sendo feito pelo maven, basta apenas ter atenção ao detalhe do anotation processor do lombok e tambem adicionar as variaveis de ambiente
@@ -53,3 +55,7 @@ de dependencias esta sendo feito pelo maven, basta apenas ter atenção ao detal
     para uma fila SQS, e só após a fila ser consumida esse novo produto será persistido no banco.
     - Para fazer um update, primeiro deve-se saber o ID do produto em seguida atualizar as informação e então enviar a requisição.
     - Para se fazer um delete também é necessário saber o ID do produto que se deseja excluir.
+    
+```
+
+
