@@ -1,10 +1,17 @@
 package dorotech.domain;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 public class Product {
-    
+
+    @NotBlank
     private String name;
+    @NotBlank
     private String description;
+    @NotNull
     private Double price;
+    @NotNull
     private Integer amount;
 
     public String getName() {
@@ -31,6 +38,4 @@ public class Product {
     public void setAmount(Integer amount) {
         this.amount = amount;
     }
-
-    
 }

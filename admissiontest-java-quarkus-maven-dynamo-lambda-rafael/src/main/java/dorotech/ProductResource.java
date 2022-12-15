@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -25,7 +27,7 @@ public class ProductResource {
     @GET
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response allProducts(@QueryParam("name") String name) {
+    public Response allProducts(@QueryParam("name") @NotBlank String name) {
         if(this.products.isEmpty()) {
             return Response.status(Response.Status.NOT_FOUND.getStatusCode()).build();
         }
@@ -44,7 +46,7 @@ public class ProductResource {
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response newProduct(List<Product> products) {
+    public Response newProduct(@Valid List<Product> products) {
         this.products.addAll(products);
         return Response.status(Response.Status.CREATED).entity(products).build();
     }
@@ -53,7 +55,7 @@ public class ProductResource {
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateMovie(Product newProduct, @QueryParam("name") String productName) {
+    public Response updateMovie(@Valid Product newProduct, @QueryParam("name") @NotBlank String productName) {
         
         // sei que dava pra utilizar streams do java
         // porém como tem mais de uma opção de retorno pra PUT (https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/PUT#responses), 
@@ -67,7 +69,9 @@ public class ProductResource {
                 return Response.noContent().build();
             }
         }
-        // pela convenção http, quando tentamos alterar um produto que não existe, e o serviço de persistencia devolve ok, ele adiciona e devolve 201-created
+        // pela convenção http, quando tentamos alterar um produto que não existe, 
+        // e o serviço de persistencia devolve com sucesso,
+        // ele adiciona e devolve 201-created ou 200-ok
         this.products.add(newProduct);
         return Response.status(Response.Status.CREATED).entity(newProduct).build();
     }
@@ -76,7 +80,7 @@ public class ProductResource {
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response deleteMovie(@QueryParam("name") String productName) {
+    public Response deleteMovie(@QueryParam("name") @NotBlank String productName) {
         this.products.removeIf(product -> product.getName().equals(productName));
         return Response.noContent().build();
     }
