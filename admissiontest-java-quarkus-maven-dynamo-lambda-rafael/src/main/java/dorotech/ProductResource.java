@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -28,7 +30,7 @@ public class ProductResource {
 
     @GET
     @Path("/")
-    public Response allProducts(@QueryParam("name") @NotBlank String name) {
+    public Response allProducts(@QueryParam("name") String name) {
         if(this.products.isEmpty()) {
             return Response.status(Response.Status.NOT_FOUND.getStatusCode()).build();
         }
@@ -52,7 +54,7 @@ public class ProductResource {
 
     @PUT
     @Path("/")
-    public Response updateMovie(@Valid Product newProduct, @QueryParam("name") @NotBlank String productName) {
+    public Response updateMovie(@Valid Product newProduct, @QueryParam("name") @Valid @NotBlank(message = "O nome do produto não pode estar vazio ou somente com espaço") String productName) {
         
         // sei que dava pra utilizar streams do java
         // porém como tem mais de uma opção de retorno pra PUT (https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/PUT#responses), 
@@ -75,7 +77,7 @@ public class ProductResource {
 
     @DELETE
     @Path("/")
-    public Response deleteMovie(@QueryParam("name") @NotBlank String productName) {
+    public Response deleteMovie(@QueryParam("name") @NotBlank(message = "O nome do produto não pode estar vazio ou somente com espaço") String productName) {
         this.products.removeIf(product -> product.getName().equals(productName));
         return Response.noContent().build();
     }

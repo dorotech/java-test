@@ -5,13 +5,13 @@ import javax.validation.constraints.NotNull;
 
 public class Product {
 
-    @NotBlank
+    @NotBlank(message = "O nome do produto não pode estar vazio ou somente com espaço")
     private String name;
-    @NotBlank
+    @NotBlank(message = "A descrição do produto não pode estar vazio ou somente com espaço")
     private String description;
-    @NotNull
+    @NotNull(message = "O preço do produto não pode ser nulo")
     private Double price;
-    @NotNull
+    @NotNull(message = "A quantidade do produto não pode ser nulo")
     private Integer amount;
 
     public String getName() {
