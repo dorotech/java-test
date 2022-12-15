@@ -20,13 +20,14 @@ import javax.ws.rs.core.Response;
 import dorotech.domain.Product;
 
 @Path("/product")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class ProductResource {
 
     private List<Product> products = new ArrayList<>();
 
     @GET
     @Path("/")
-    @Produces(MediaType.APPLICATION_JSON)
     public Response allProducts(@QueryParam("name") @NotBlank String name) {
         if(this.products.isEmpty()) {
             return Response.status(Response.Status.NOT_FOUND.getStatusCode()).build();
@@ -44,8 +45,6 @@ public class ProductResource {
 
     @POST
     @Path("/")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
     public Response newProduct(@Valid List<Product> products) {
         this.products.addAll(products);
         return Response.status(Response.Status.CREATED).entity(products).build();
@@ -53,8 +52,6 @@ public class ProductResource {
 
     @PUT
     @Path("/")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
     public Response updateMovie(@Valid Product newProduct, @QueryParam("name") @NotBlank String productName) {
         
         // sei que dava pra utilizar streams do java
@@ -78,8 +75,6 @@ public class ProductResource {
 
     @DELETE
     @Path("/")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
     public Response deleteMovie(@QueryParam("name") @NotBlank String productName) {
         this.products.removeIf(product -> product.getName().equals(productName));
         return Response.noContent().build();
