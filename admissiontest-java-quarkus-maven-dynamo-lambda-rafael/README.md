@@ -1,61 +1,110 @@
-# admissiontest-java-quarkus-maven-dynamo-lambda-rafael Project
+# Projeto e tecnologias
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+Projeto de teste de admissão feito em java 11 usando framework Quarkus, Maven Wrapper, AWS DynamoDB, AWS Lambda, AWS S3, AWS API Gateway, AWS Cloud Formation, e principalmente AWS IAM.
 
-If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
+#### Antes de mais nada:
+Instale java 11
+pode ser o oracle mesmo ou do próprio GraalVM
 
-## Running the application in dev mode
+Não precisa instalar Maven, o projeto já tem o maven wrapper.
 
-You can run your application in dev mode that enables live coding using:
+Instale também o AWS CLI (https://docs.aws.amazon.com/pt_br/cli/latest/userguide/getting-started-install.html) 
+e SAM CLI (https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/install-sam-cli.html)
+
+Siga as recomendações do seu sistema operacional, no meu caso, foi **Windows**
+
+Vá na console da aws e crie um grupo de usuário com o nome **lambda_dynamo_s3_cloudformation_iam_apigateway**
+adicione as funções
+
+- IAMFullAccess
+- AmazonS3FullAccess
+- AmazonDynamoDBFullAccess
+- AmazonAPIGatewayAdministrator
+- AWSCloudFormationFullAccess
+- AWSLambda_FullAccess
+
+e crie um perfil chamado **dorotech** com esse grupo de permissões (**lambda_dynamo_s3_cloudformation_iam_apigateway**)
+salve as chaves *AWS_KEY_ID* e *AWS_SECRET_ID*
+
+Após criar o usuário dorotech, utilize o comando abaixo no terminal da sua máquina
+
 ```shell script
-./mvnw compile quarkus:dev
+aws configure
+```
+No comando acima, insira as chaves AWS_KEY_ID e AWS_SECRET_ID gerados no momento da criação do usuário e use a zona que melhor convier
+
+#### O que fazer no Dynamo
+Crie uma tabela chamada **product** com o campo chave **name**
+Como é apenas para teste, pode usar as configurações padrões que a aws oferecer no momento da criação
+**É importante que vc crie na mesma zona.**
+
+#### O que fazer no Amazon S3
+Crie um bucket chamado **dorotech-admission-test**
+**É importante que vc crie na mesma zona.**
+
+### Um pouco mais do projeto
+
+Criei testes unitários básicos, de GET, POST, PUT e DELETE.
+Voce pode validar os testes usando os comandos:
+```shell script
+./mvnw clean verify
 ```
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at http://localhost:8080/q/dev/.
+Iniciei o projeto sem as libs do dynamo e do lambda,
+depois fiz umas pesquisas e consegui sair do outro lado
 
-## Packaging and running the application
+**Obs.: infelizmente essa é minha primeira vez mexendo com quarkus**
 
-The application can be packaged using:
+## Empacotando e fazendo deploy
+Com o sam instalado vamos rodar alguns comandos agora
+
+### Empacotando a aplicação
+
+A aplicação pode ser empacotada usando:
 ```shell script
-./mvnw package
-```
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
-
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
-
-If you want to build an _über-jar_, execute the following command:
-```shell script
-./mvnw package -Dquarkus.package.type=uber-jar
+./mvnw clean package
+sam package --template-file .\target\sam.jvm.yaml --output-template-file packaged.yaml --s3-bucket dorotech-admission-test
 ```
 
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
+Esse comando vai zipar o projeto e fazer deploy dele direto no bucket **dorotech-admission-test** que criamos anteriormente.
 
-## Creating a native executable
+### Fazendo deploy da aplicação
 
-You can create a native executable using: 
+Esse comando demora um pouco mais, mas basicamente, ele vai utilizar o packaged.yaml que geramos no comando anterior, que nada mais é do que 
 ```shell script
-./mvnw package -Pnative
+sam deploy --template-file packaged.yaml --capabilities CAPABILITY_IAM --stack-name stack-dorotech-lambda-http
+```
+No final da execução ele vai te disponibilizar um endereço do api gateway
+
+Dentro do projeto tem a collection.json do postman. (Dorotech Test.postman_collection.json)
+
+## Pra finalizar
+
+Por fim, vá até o serviço do IAM, na guia de gerenciamento de acesss, no menu de **Funções** ou **Functions** procure pela função com prefixo "stack-dorotech-lambda" e clique nela, na próxima janela, do lado direito, vá em **Adicionar Permissões -> Anexar Políticas** 
+Adicione a polítia
+- AmazonDynamoDBFullAccess
+
+Com isso a lambda vai ter permissão de acesso pra ler/escrever no dynamo.
+
+Caso vc não queira fazer isso, basta ir no packaged.yaml no caminho:
+```shell script
+Resources> AdmissiontestJavaQuarkusMavenDynamoLambdaRafael> Properties> Policies
+e ao invés de deixar
+
+Policies: AWSLambdaBasicExecutionRole
+
+mude para
+
+Policies: 
+    - AWSLambdaBasicExecutionRole
+    - AmazonDynamoDBFullAccess
+
+é de extrema importancia tomar cuidado com os espaçamentos, 
+precisa ficar alinhado, senão dá problema no arquivo
 ```
 
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using: 
-```shell script
-./mvnw package -Pnative -Dquarkus.native.container-build=true
-```
+##### 1000 desculpas não ter feito o swagger, perdi um tempo considerável aprendendo o framework ##### 
 
-You can then execute your native executable with: `./target/admissiontest-java-quarkus-maven-dynamo-lambda-rafael-1.0.0-SNAPSHOT-runner`
-
-If you want to learn more about building native executables, please consult https://quarkus.io/guides/maven-tooling.
-
-## Related Guides
-
-- Amazon DynamoDB Enhanced ([guide](https://quarkiverse.github.io/quarkiverse-docs/quarkus-amazon-services/dev/amazon-dynamodb.html)): Connect to Amazon DynamoDB datastore
-- RESTEasy Classic ([guide](https://quarkus.io/guides/resteasy)): REST endpoint framework implementing JAX-RS and more
-
-## Provided Code
-
-### RESTEasy JAX-RS
-
-Easily start your RESTful Web Services
-
-[Related guide section...](https://quarkus.io/guides/getting-started#the-jax-rs-resources)
+É isso, qualquer coisa só me chamar :
+Rafael Silva Oliveira
++55 11 982018310

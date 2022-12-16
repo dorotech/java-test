@@ -1,0 +1,30 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: AWS Serverless Quarkus HTTP - admissiontest-java-quarkus-maven-dynamo-lambda-rafael-1.0.0-SNAPSHOT
+Globals:
+  Api:
+    EndpointConfiguration: REGIONAL
+    BinaryMediaTypes:
+    - '*/*'
+Resources:
+  AdmissiontestJavaQuarkusMavenDynamoLambdaRafael:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: io.quarkus.amazon.lambda.runtime.QuarkusStreamHandler::handleRequest
+      Runtime: java11
+      CodeUri: s3://dorotech-admission-test/e97865d12015d0adf7e1949e48033f78
+      MemorySize: 512
+      Policies: AWSLambdaBasicExecutionRole
+      Timeout: 15
+      Events:
+        HttpApiEvent:
+          Type: HttpApi
+    Metadata:
+      SamResourceId: AdmissiontestJavaQuarkusMavenDynamoLambdaRafael
+Outputs:
+  AdmissiontestJavaQuarkusMavenDynamoLambdaRafaelApi:
+    Description: URL for application
+    Value:
+      Fn::Sub: https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com/
+    Export:
+      Name: AdmissiontestJavaQuarkusMavenDynamoLambdaRafaelApi
