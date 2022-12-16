@@ -3,9 +3,11 @@ package dorotech.domain;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import io.quarkus.runtime.annotations.RegisterForReflection;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbAttribute;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 
-@RegisterForReflection
+@DynamoDbBean
 public class Product {
 
     @NotBlank(message = "O nome do produto não pode estar vazio ou somente com espaço")
@@ -17,38 +19,29 @@ public class Product {
     @NotNull(message = "A quantidade do produto não pode ser nulo")
     private Integer amount;
 
-    public Product(){
-        super();
-    }
-
-    public Product(@NotBlank(message = "O nome do produto não pode estar vazio ou somente com espaço") String name,
-            @NotBlank(message = "A descrição do produto não pode estar vazio ou somente com espaço") String description,
-            @NotNull(message = "O preço do produto não pode ser nulo") Double price,
-            @NotNull(message = "A quantidade do produto não pode ser nulo") Integer amount) {
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.amount = amount;
-    }
-
+    @DynamoDbPartitionKey
+    @DynamoDbAttribute(value = "name")
     public String getName() {
         return name;
     }
     public void setName(String name) {
         this.name = name;
     }
+    @DynamoDbAttribute(value = "description")
     public String getDescription() {
         return description;
     }
     public void setDescription(String description) {
         this.description = description;
     }
+    @DynamoDbAttribute(value = "price")
     public Double getPrice() {
         return price;
     }
     public void setPrice(Double price) {
         this.price = price;
     }
+    @DynamoDbAttribute(value = "amount")
     public Integer getAmount() {
         return amount;
     }
